@@ -3,6 +3,7 @@
 
 #include "OpenDoor.h"
 #include "Engine/TriggerVolume.h"
+#include "Engine.h"
 #include "GameFramework/Actor.h"
 
 // Sets default values for this component's properties
@@ -20,6 +21,8 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
+	Owner = GetOwner();
+	OriginRotator = Owner->GetTransform().GetRotation().Rotator();
 	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
@@ -31,25 +34,28 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 	// Poll the Trigger Volume
 	// If the ActorThatOpens is in the volume
-	if(DoOnce)
-	{
+	// if(DoOnce)
+	// {
 		if(PressurePlate && PressurePlate->IsOverlappingActor(ActorThatOpens))
 		{
 			OpenDoor();
-			DoOnce = !DoOnce;
+			// DoOnce = !DoOnce;
+			LastDoorOpenTime = GetWorld()->GetTimeSeconds();
 		}
-	}
+
+		if ((GetWorld()->GetTimeSeconds() - LastDoorOpenTime) > DoorCloseDelay)
+		{
+			CloseDoor();
+		}
+	// }
 }
 
 void UOpenDoor::OpenDoor()
 {
-	//Find Owning object
-	auto Owner = GetOwner();
+	Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw + OpenAngle, 0.f));
+}
 
-	//Find origin rotator
-	auto OriginRotator = Owner->GetActorRotation();
-	//Create a rotator
-	auto NewRotator = FRotator(0.f, OpenAngle, 0.f);
-	//Set the door rotation
-	Owner->SetActorRotation(OriginRotator + NewRotator);
+void UOpenDoor::CloseDoor()
+{
+	Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw, 0.f));
 }

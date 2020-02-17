@@ -18,16 +18,25 @@ public:
 	UOpenDoor();
 
 	UPROPERTY(EditAnywhere)
-	float OpenAngle = 90.f;
+	float OpenAngle = -90.f;
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 
+	UPROPERTY(EditAnywhere)
+	float DoorCloseDelay = 1.5f;
+
+	float LastDoorOpenTime;
+
 	// UPROPERTY(EditAnywhere)
 	AActor* ActorThatOpens;
 
+	AActor* Owner;
+
 	UPROPERTY(VisibleAnywhere)
 	bool DoOnce = true;
+
+	FRotator OriginRotator;
 
 protected:
 	// Called when the game starts
@@ -38,5 +47,6 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void OpenDoor();
+	void CloseDoor();
 		
 };
