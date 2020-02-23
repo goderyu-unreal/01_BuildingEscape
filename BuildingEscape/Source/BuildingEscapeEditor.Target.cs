@@ -10,5 +10,7 @@ public class BuildingEscapeEditorTarget : TargetRules
 		Type = TargetType.Editor;
 
 		ExtraModuleNames.AddRange( new string[] { "BuildingEscape" } );
+
+		DefaultBuildSettings = BuildSettingsVersion.V2;
 	}
 }
