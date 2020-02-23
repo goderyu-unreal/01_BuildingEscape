@@ -18,6 +18,9 @@ public:
 	UOpenDoor();
 
 	UPROPERTY(EditAnywhere)
+	float TriggerMass = 50.f;
+
+	UPROPERTY(EditAnywhere)
 	float OpenAngle = -90.f;
 
 	UPROPERTY(EditAnywhere)
@@ -28,8 +31,6 @@ public:
 
 	float LastDoorOpenTime;
 
-	// UPROPERTY(EditAnywhere)
-	AActor* ActorThatOpens;
 
 	AActor* Owner;
 
@@ -48,5 +49,8 @@ public:
 
 	void OpenDoor();
 	void CloseDoor();
+
+	// Returns total mass in kg
+	float GetTotalMassOfActorsOnPlate();
 		
 };
