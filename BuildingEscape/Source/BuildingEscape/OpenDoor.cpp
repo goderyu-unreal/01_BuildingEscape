@@ -59,12 +59,13 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UOpenDoor::OpenDoor()
 {
-	if (!Owner)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Pointer Owner is nullptr"));
-		return;
-	}
-	Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw + OpenAngle, 0.f));
+	// if (!Owner)
+	// {
+	// 	UE_LOG(LogTemp, Error, TEXT("Pointer Owner is nullptr"));
+	// 	return;
+	// }
+	// Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw + OpenAngle, 0.f));
+	OnOpenRequest.Broadcast();
 }
 
 void UOpenDoor::CloseDoor()
