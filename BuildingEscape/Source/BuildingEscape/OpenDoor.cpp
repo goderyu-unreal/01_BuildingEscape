@@ -70,12 +70,13 @@ void UOpenDoor::OpenDoor()
 
 void UOpenDoor::CloseDoor()
 {
-	if (!Owner)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Pointer Owner is nullptr"));
-		return;
-	}
-	Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw, 0.f));
+	// if (!Owner)
+	// {
+	// 	UE_LOG(LogTemp, Error, TEXT("Pointer Owner is nullptr"));
+	// 	return;
+	// }
+	// Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw, 0.f));
+	OnCloseRequest.Broadcast();
 }
 
 float UOpenDoor::GetTotalMassOfActorsOnPlate()
