@@ -65,6 +65,11 @@ void UGrabber::Grab()
 	/// If we hit something then attach a physics handle
 	if(ActorHit)
 	{
+		if (!PhysicsHandle)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Pointer PhysicsHandle is nullptr"));
+			return;
+		}
 		PhysicsHandle->GrabComponent(
 			ComponentToGrab,
 			NAME_None, // no bones needed
@@ -77,6 +82,11 @@ void UGrabber::Grab()
 // Release physics handle
 void UGrabber::Release()
 {
+	if (!PhysicsHandle)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Pointer PhysicsHandle is nullptr"));
+		return;
+	}
 	PhysicsHandle->ReleaseComponent();
 }
 
@@ -86,6 +96,11 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// If the physics handle is attached
+	if (!PhysicsHandle)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Pointer PhysicsHandle is nullptr"));
+		return;
+	}
 	if(PhysicsHandle->GrabbedComponent)
 	{
 		// move the object that we're holding

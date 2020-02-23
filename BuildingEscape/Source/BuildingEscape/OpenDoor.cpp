@@ -25,6 +25,11 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = GetOwner();
+	if (!Owner)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Pointer Owner is nullptr"));
+		return;
+	}
 	OriginRotator = Owner->GetTransform().GetRotation().Rotator();
 }
 
@@ -54,11 +59,21 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UOpenDoor::OpenDoor()
 {
+	if (!Owner)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Pointer Owner is nullptr"));
+		return;
+	}
 	Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw + OpenAngle, 0.f));
 }
 
 void UOpenDoor::CloseDoor()
 {
+	if (!Owner)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Pointer Owner is nullptr"));
+		return;
+	}
 	Owner->SetActorRotation(FRotator(0.f, OriginRotator.Yaw, 0.f));
 }
 
@@ -66,12 +81,22 @@ float UOpenDoor::GetTotalMassOfActorsOnPlate()
 {
 	// TODO calc total mass
 	float TotalMass = 0.f;
+	if (!PressurePlate)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Pointer PressurePlate is nullptr"));
+		return TotalMass;
+	}
 	// Find all the overlapping actors
 	TArray<AActor*> OverlappingActors;
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
 	// Iterate through them adding their masses
 	for(const auto& Actor : OverlappingActors)
 	{
+		if (!Actor)
+		{
+			UE_LOG(LogTemp, Error, TEXT("TArray<AACtor*> OverlappingActors has nullptr"));
+			return TotalMass;
+		}
 		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
 		UE_LOG(LogTemp, Warning, TEXT("%s on pressure plate"), *Actor->GetName());
 	}
